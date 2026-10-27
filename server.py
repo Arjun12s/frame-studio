@@ -87,7 +87,9 @@ def render_video(job_id: str, source_path: Path, start: float, duration: float, 
             f"crop=if(gte(iw/ih\\,0.5625)\\,"
             f"trunc(ih*0.5625/{zoom}/2)*2\\,trunc(iw/2)*2):"
             f"if(gte(iw/ih\\,0.5625)\\,trunc(ih/2)*2\\,trunc(iw/0.5625/{zoom}/2)*2):"
-            f"(iw-ow)/2:(ih-oh)/2,scale=1080:1920:flags=fast_bilinear"
+            f"(iw-ow)/2:(ih-oh)/2,"
+            "scale=w='if(gte(ih,1920),trunc(ih*0.5625/2)*2,1080)':"
+            "h='if(gte(ih,1920),trunc(ih/2)*2,1920)':flags=lanczos"
         )
         # Keep the expressions assigned above available as a simple fallback if an FFmpeg
         # build rejects conditional crop syntax.
@@ -95,11 +97,11 @@ def render_video(job_id: str, source_path: Path, start: float, duration: float, 
         command = [
             ffmpeg, "-y", "-hide_banner", "-loglevel", "error",
             "-ss", f"{start:.3f}", "-i", str(source_path), "-t", f"{duration:.3f}",
-            "-vf", video_filter, "-r", "30", "-c:v", "libx264", "-preset", "ultrafast",
-            "-crf", "23", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k",
+            "-vf", video_filter, "-fps_mode", "passthrough", "-c:v", "libx264", "-preset", "slow",
+            "-crf", "17", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
             "-movflags", "+faststart", "-progress", "pipe:1", "-nostats", str(output_path),
         ]
-        job_update(job_id, phase="rendering", percent=progress_start, status_text="Fast rendering with FFmpeg…")
+        job_update(job_id, phase="rendering", percent=progress_start, status_text="High-quality encoding with FFmpeg…")
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
                                    text=True, encoding="utf-8", errors="replace", bufsize=1)
         assert process.stdout is not None
@@ -144,7 +146,7 @@ def render_youtube_video(job_id: str, url: str, start: float, duration: float, z
                            status_text="Preparing selected clip for render…")
 
         options = {
-            "format": "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best",
+            "format": "bestvideo+bestaudio/best",
             "outtmpl": str(source_dir / "clip.%(ext)s"),
             "noplaylist": True,
             "quiet": True,
@@ -170,7 +172,7 @@ def render_youtube_video(job_id: str, url: str, start: float, duration: float, z
                     raise RuntimeError("The selected video section could not be downloaded.")
                 source_path = candidates[0]
         job_update(job_id, phase="rendering", percent=40,
-                   status_text="Fast rendering with FFmpeg…")
+                   status_text="High-quality encoding with FFmpeg…")
         render_video(job_id, source_path, 0, duration, zoom, progress_start=40)
     except Exception as exc:
         job_update(job_id, status="error", phase="error", error=str(exc)[:350],

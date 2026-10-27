@@ -548,7 +548,7 @@ async function createShort() {
   $('#progress-panel').hidden = false;
   createButton.querySelector('#button-text').textContent = 'Rendering your Short…';
   createButton.querySelector('.button-note').textContent = 'Fast local render · MP4 download';
-  setProgress(1, 'Preparing fast render…');
+  setProgress(1, 'Preparing high-quality render…');
   $('#progress-hint').textContent = sourceKind === 'youtube'
     ? 'Only the selected section downloads, then FFmpeg renders it. Keep this tab open.'
     : 'Rendering on this computer with FFmpeg. Keep this tab open.';
@@ -597,7 +597,7 @@ async function createShort() {
         $('.result-check').style.color = '';
         $('.result-check').style.background = '';
         $('.result-copy strong').textContent = 'Your Short is ready';
-        $('#result-details').textContent = `${formatTime(render.duration || clipLength())} · 1080 × 1920 · ${formatSize(render.size || 0)} · MP4`;
+        $('#result-details').textContent = `${formatTime(render.duration || clipLength())} · adaptive 9:16 · ${formatSize(render.size || 0)} · MP4`;
         $('#progress-panel').hidden = true;
         download.click();
         $('#preview-label').textContent = 'SHORT READY';
@@ -610,7 +610,7 @@ async function createShort() {
     busy = false;
     setReadyState();
     createButton.querySelector('#button-text').textContent = 'Create my Short';
-    createButton.querySelector('.button-note').textContent = '60 seconds · 9:16 vertical · saved as MP4';
+    createButton.querySelector('.button-note').textContent = 'High quality · adaptive 9:16 · MP4';
   }
 }
 

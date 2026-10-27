@@ -7,7 +7,7 @@ Frame Studio turns a selected moment from a long video into a vertical short. It
 - Accepts a public YouTube video link or a local video file.
 - Reads YouTube video details first, then fetches only the selected section when you render.
 - Lets you choose the clip start and adjust the center crop.
-- Renders up to 60 seconds in 1080 × 1920 (9:16), with the original audio.
+- Renders up to 60 seconds in 9:16, preserving the best source resolution available (with a 1080 × 1920 minimum output), frame rate, and original audio.
 - Uses FFmpeg locally. Source and render files stay on your computer.
 
 Use only videos you own or have permission to edit. Audience-retention analytics and Google sign-in are not included.
