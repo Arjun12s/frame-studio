@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10100f" />
+    <title>FRAME — Make a Short</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style-source.css" />
+    <link rel="stylesheet" href="style-preview.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Frame home"><span class="brand-mark">F</span> frame<span class="brand-dot">.</span></a>
+      <div class="topbar-right"><span class="local-badge"><i></i> ALL PROCESSING ON YOUR DEVICE</span><span class="avatar">A</span></div>
+    </header>
+
+    <main class="app-shell">
+      <section class="intro">
+        <div class="eyebrow"><span>01</span> &nbsp; LONG FORM IN, SHORT FORM OUT</div>
+        <h1>Make a moment<br />worth <em>stopping for.</em></h1>
+        <p>Turn any long video into a vertical short. Pick the moment, frame the shot, and save it to your device.</p>
+      </section>
+
+      <section class="workspace" aria-label="Short video creator">
+        <div class="editor-column">
+          <div class="panel source-panel">
+            <div class="panel-head"><div class="section-label"><span class="step">1</span><div><h2>Choose your source</h2><p>Paste a YouTube link or upload a video you can edit.</p></div></div><span class="format-tag">YOUTUBE · MP4 · MOV</span></div>
+            <form class="youtube-form" id="youtube-form"><div class="youtube-input-wrap"><span class="link-icon">↗</span><input id="youtube-url" type="url" placeholder="Paste a YouTube video link" aria-label="YouTube video URL" /><button type="submit" id="youtube-submit">Load video <span>↗</span></button></div><div class="source-hint" id="source-hint">Use a video you own or have permission to edit.</div></form>
+            <div class="download-status" id="download-status" hidden><div class="download-status-head"><span id="download-label">Getting video info…</span><span id="download-percent">0%</span></div><div class="download-progress-track"><div id="download-progress-bar"></div></div><small id="download-hint">Downloading to this computer. Longer videos may take a few minutes.</small></div>
+            <div class="source-divider"><span>OR UPLOAD A FILE</span></div>
+            <label class="dropzone" id="dropzone" for="file-input">
+              <input type="file" id="file-input" accept="video/*" />
+              <span class="upload-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 15.5v3A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-3" /></svg></span>
+              <span class="drop-title" id="drop-title">Drop your video here</span>
+              <span class="drop-subtitle" id="drop-subtitle">or <b>browse files</b> from your device</span>
+            </label>
+            <div class="file-meta" id="file-meta" hidden><span class="file-icon">▶</span><div class="file-details"><strong id="file-name"></strong><small id="file-info"></small></div><button class="icon-button" id="remove-file" aria-label="Remove video">×</button></div>
+          </div>
+
+          <div class="panel clip-panel">
+            <div class="panel-head"><div class="section-label"><span class="step">2</span><div><h2>Find your moment</h2><p>Choose the start point. Your short is up to 60 seconds.</p></div></div><span class="duration-pill"><span class="record-dot"></span> 01:00 MAX</span></div>
+            <div class="timeline-wrap">
+              <div class="timeline-times"><span id="current-time">00:00</span><span id="source-duration">00:00</span></div>
+              <div class="range-wrap"><div class="range-track"><div class="range-fill" id="range-fill"></div></div><input id="start-range" type="range" min="0" max="0" step="0.1" value="0" aria-label="Clip start time" disabled /></div>
+              <div class="timeline-footer"><span>CLIP START</span><div class="time-entry"><input id="start-input" type="number" min="0" step="1" value="0" disabled /><span>sec</span></div></div>
+            </div>
+          </div>
+
+          <div class="panel framing-panel">
+            <div class="panel-head"><div class="section-label"><span class="step">3</span><div><h2>Frame for vertical</h2><p>Center crop fills the screen. Adjust the zoom to reframe.</p></div></div><span class="format-tag accent-tag">9:16 PORTRAIT</span></div>
+            <div class="zoom-control"><span class="zoom-label">ZOOM</span><input id="zoom-range" type="range" min="1" max="1.8" step="0.05" value="1" disabled /><span id="zoom-value">1.0×</span><button id="reset-zoom" class="text-button" disabled>RESET</button></div>
+          </div>
+
+          <button class="create-button" id="create-button" disabled><span class="button-main"><span id="button-text">Create my Short</span><span class="button-arrow">↗</span></span><span class="button-note" id="button-note">60 seconds · 9:16 vertical · saved as MP4</span></button>
+          <div class="progress-panel" id="progress-panel" hidden><div class="progress-copy"><span id="progress-label">Preparing your short…</span><span id="progress-percent">0%</span></div><div class="progress-track"><div id="progress-bar"></div></div><small id="progress-hint">Keep this tab open while your video renders.</small></div>
+          <div class="result-panel" id="result-panel" hidden><div class="result-check">✓</div><div class="result-copy"><strong>Your Short is ready</strong><span id="result-details">Saved to your downloads.</span></div><a class="download-again" id="download-again" href="#" download>Download again ↗</a></div>
+        </div>
+
+        <aside class="preview-column">
+          <div class="preview-head"><span>LIVE PREVIEW</span><span class="preview-status" id="preview-status"><i></i><span id="preview-label">WAITING FOR VIDEO</span></span></div>
+          <div class="preview-stage" id="preview-stage">
+            <div class="preview-empty" id="preview-empty"><div class="empty-glyph"><span></span><span></span><span></span></div><strong>Your frame, in focus.</strong><p>Add a video to see how it looks as a Short.</p></div>
+            <img class="preview-poster" id="preview-poster" alt="YouTube source video preview" hidden />
+            <canvas id="preview-canvas" width="360" height="640" hidden></canvas>
+            <video id="source-video" playsinline preload="metadata" hidden></video>
+            <div class="preview-overlay" id="preview-overlay" hidden><span class="ratio-chip">9:16</span><span class="safe-chip">SAFE AREA</span></div>
+            <button class="play-button" id="play-button" aria-label="Play preview" hidden>▶</button>
+          </div>
+          <div class="preview-footer"><span><i class="audio-icon">♫</i> Original audio preserved</span><span>1080 × 1920</span></div>
+          <div class="note-card"><span class="note-icon">✳</span><p><strong>Made for the scroll.</strong><br />The center of your video is framed for a full-screen vertical view.</p></div>
+        </aside>
+      </section>
+      <footer class="page-footer"><span>FRAME STUDIO <span class="footer-sep">/</span> MADE FOR THE NEXT PLAY</span><span>YOUR VIDEO NEVER LEAVES YOUR DEVICE</span></footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
